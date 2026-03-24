@@ -167,7 +167,7 @@
                     <div class="pt-4">
                         <label class="flex items-start space-x-3 cursor-pointer group">
                             <input type="checkbox" required class="mt-1 h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-                            <span class="text-sm text-gray-600">He leído y acepto la <a href="#" onclick="showLegal('privacidad')" class="text-blue-700 font-bold underline">Política de Privacidad</a>.</span>
+                            <span class="text-sm text-gray-600">He leído y acepto la <button type="button" onclick="showLegal('privacidad')" class="text-blue-700 font-bold underline bg-transparent border-none p-0 cursor-pointer">Política de Privacidad</button>.</span>
                         </label>
                     </div>
 
@@ -192,9 +192,9 @@
     <footer class="bg-gray-950 text-gray-400 py-16">
         <div class="container mx-auto px-4 text-center">
             <div class="flex justify-center space-x-8 mb-10 text-sm font-bold uppercase tracking-widest text-gray-500">
-                <a href="#" onclick="showLegal('aviso')" class="hover:text-white transition">Aviso Legal</a>
-                <a href="#" onclick="showLegal('privacidad')" class="hover:text-white transition">Privacidad</a>
-                <a href="#" onclick="showLegal('cookies')" class="hover:text-white transition">Cookies</a>
+                <button onclick="showLegal('aviso')" class="hover:text-white transition bg-transparent border-none cursor-pointer uppercase font-bold text-sm">Aviso Legal</button>
+                <button onclick="showLegal('privacidad')" class="hover:text-white transition bg-transparent border-none cursor-pointer uppercase font-bold text-sm">Privacidad</button>
+                <button onclick="showLegal('cookies')" class="hover:text-white transition bg-transparent border-none cursor-pointer uppercase font-bold text-sm">Cookies</button>
             </div>
             <div class="w-full h-px bg-gray-800 mb-10 mx-auto max-w-lg"></div>
             <p class="text-lg text-gray-200 font-medium">Talleres Jorge y Caty</p>
@@ -208,7 +208,7 @@
         <div class="container mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
             <div class="flex-1">
                 <h4 class="font-bold text-lg mb-1">Tu privacidad nos importa</h4>
-                <p class="text-xs text-gray-400 leading-relaxed">Utilizamos cookies para analizar el tráfico y mejorar tu experiencia. Puedes aceptarlas todas o ver nuestra <a href="#" onclick="showLegal('cookies')" class="underline">política de cookies</a> para saber más.</p>
+                <p class="text-xs text-gray-400 leading-relaxed">Utilizamos cookies para analizar el tráfico y mejorar tu experiencia. Puedes aceptarlas todas o ver nuestra <button type="button" onclick="showLegal('cookies')" class="underline bg-transparent border-none text-gray-400 p-0 cursor-pointer">política de cookies</button> para saber más.</p>
             </div>
             <div class="flex space-x-3 shrink-0">
                 <button onclick="acceptCookies()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-bold text-sm transition">Aceptar todas</button>
@@ -224,4 +224,105 @@
                 <h3 id="legalTitle" class="text-3xl font-black text-blue-900"></h3>
                 <button onclick="closeLegal()" class="text-gray-400 hover:text-black text-4xl transition">&times;</button>
             </div>
-            <div id="legalBody" class="text-gray-700 leading-relaxed space-y-
+            <div id="legalBody" class="text-gray-700 leading-relaxed space-y-6 overflow-x-hidden">
+                <!-- Texto inyectado -->
+            </div>
+            <div class="mt-10 pt-6 border-t text-center">
+                <button onclick="closeLegal()" class="bg-blue-900 hover:bg-black text-white px-10 py-3 rounded-full font-bold transition">Entendido</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- GESTIÓN DE COOKIES ---
+        window.onload = function() {
+            if (!localStorage.getItem('cookies-accepted')) {
+                document.getElementById('cookie-banner').style.display = 'block';
+            }
+        };
+
+        function acceptCookies() {
+            localStorage.setItem('cookies-accepted', 'true');
+            hideCookies();
+        }
+
+        function hideCookies() {
+            document.getElementById('cookie-banner').style.display = 'none';
+        }
+
+        // --- GESTIÓN DE TEXTOS LEGALES ---
+        const legalTexts = {
+            aviso: {
+                title: "Aviso Legal",
+                body: `
+                    <div class="space-y-4">
+                        <p class="font-bold text-lg">1. Datos del Titular</p>
+                        <p>En cumplimiento de la LSSI, le informamos que el titular de esta web es <strong>[Nombre Completo del Autónomo o Empresa]</strong>, con NIF/CIF <strong>[Número NIF]</strong> y domicilio profesional en C. del Conde de la Viñaza, 15, 50017 Zaragoza.</p>
+                        <p class="font-bold text-lg">2. Condiciones de Uso</p>
+                        <p>El acceso a esta web le atribuye la condición de USUARIO e implica la aceptación de estas condiciones. Los contenidos aquí mostrados son meramente informativos sobre los servicios de Talleres Jorge y Caty.</p>
+                        <p class="font-bold text-lg">3. Responsabilidad</p>
+                        <p>El titular no se hace responsable de daños causados por virus informáticos o fallos en la red que impidan la visualización de la web.</p>
+                    </div>
+                `
+            },
+            privacidad: {
+                title: "Política de Privacidad",
+                body: `
+                    <div class="space-y-4">
+                        <p>De acuerdo con el RGPD, le informamos de cómo tratamos sus datos:</p>
+                        <p><strong>Responsable:</strong> [Nombre del Titular]</p>
+                        <p><strong>Finalidad:</strong> Atender las peticiones de contacto y solicitudes de cita para el taller.</p>
+                        <p><strong>Legitimación:</strong> Su consentimiento explícito al rellenar y enviar el formulario.</p>
+                        <p><strong>Conservación:</strong> Los datos se conservarán el tiempo necesario para cumplir con la finalidad para la que se recogieron o mientras existan obligaciones legales.</p>
+                        <p><strong>Derechos:</strong> Puede ejercer sus derechos de acceso, rectificación, portabilidad o supresión enviando su solicitud acompañada de DNI a [Tu Email].</p>
+                    </div>
+                `
+            },
+            cookies: {
+                title: "Política de Cookies",
+                body: `
+                    <div class="space-y-4">
+                        <p>Este sitio web utiliza cookies propias y de terceros para:</p>
+                        <ul class="list-disc ml-6 space-y-2">
+                            <li><strong>Cookies Técnicas:</strong> Imprescindibles para navegar.</li>
+                            <li><strong>Cookies Analíticas:</strong> Para analizar el tráfico web y mejorar nuestros servicios (Google Analytics).</li>
+                        </ul>
+                        <p>Usted puede desactivar las cookies a través de la configuración de su navegador, pero la experiencia de usuario podría verse afectada.</p>
+                    </div>
+                `
+            }
+        };
+
+        function showLegal(type) {
+            const data = legalTexts[type];
+            document.getElementById('legalTitle').innerText = data.title;
+            document.getElementById('legalBody').innerHTML = data.body;
+            document.getElementById('legalModal').style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Evita scroll de fondo
+        }
+
+        function closeLegal() {
+            document.getElementById('legalModal').style.display = 'none';
+            document.body.style.overflow = 'auto'; // Restaura scroll
+        }
+
+        // --- ENVÍO DE FORMULARIO (MOCK) ---
+        document.getElementById('contactForm').onsubmit = function(e) {
+            e.preventDefault();
+            const alertMsg = document.createElement('div');
+            alertMsg.className = 'fixed top-10 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-8 py-4 rounded-xl shadow-2xl z-[200] font-bold';
+            alertMsg.innerText = '¡Solicitud enviada! Nos pondremos en contacto contigo pronto.';
+            document.body.appendChild(alertMsg);
+            
+            this.reset();
+            setTimeout(() => alertMsg.remove(), 4000);
+        }
+
+        // Cerrar modal al hacer clic fuera del contenido
+        window.onclick = function(event) {
+            let modal = document.getElementById('legalModal');
+            if (event.target == modal) closeLegal();
+        }
+    </script>
+</body>
+</html>
